@@ -41,7 +41,7 @@ export const TOOL_DEFINITIONS: Anthropic.Tool[] = [
       properties: {
         zone:    { type: "string", description: "Nombre de la zona (ej: 'Chapinero')" },
         metric:  { type: "string", description: "Nombre de la métrica" },
-        n_weeks: { type: "number", description: "Número de semanas de historia (1-9)", minimum: 1, maximum: 9 },
+        n_weeks: { type: "number", description: "Semanas de historia a mostrar (1-8). Con n_weeks=8 retorna desde L8W_ROLL hasta L0W_ROLL inclusive.", minimum: 1, maximum: 8 },
         country: { type: "string", description: "Código de país para desambiguar zonas con el mismo nombre. Opcional." },
       },
       required: ["zone", "metric", "n_weeks"],
@@ -70,8 +70,8 @@ export const TOOL_DEFINITIONS: Anthropic.Tool[] = [
       properties: {
         metric_high:     { type: "string", description: "Métrica que debe ser alta" },
         metric_low:      { type: "string", description: "Métrica que debe ser baja" },
-        threshold_high:  { type: "number", description: "Percentil mínimo para considerar 'alto' (0-100, default 75)" },
-        threshold_low:   { type: "number", description: "Percentil máximo para considerar 'bajo' (0-100, default 25)" },
+        threshold_high:  { type: "number", description: "Percentil mínimo para considerar 'alto' (0-100, default 90). Usar 90 o más para encontrar zonas realmente destacadas." },
+        threshold_low:   { type: "number", description: "Percentil máximo para considerar 'bajo' (0-100, default 10). Usar 10 o menos para encontrar zonas realmente rezagadas." },
         week:            { type: "string", enum: ["L0W_ROLL","L1W_ROLL","L2W_ROLL","L3W_ROLL","L4W_ROLL","L5W_ROLL","L6W_ROLL","L7W_ROLL","L8W_ROLL"] },
       },
       required: ["metric_high", "metric_low", "week"],

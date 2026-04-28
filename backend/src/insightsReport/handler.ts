@@ -15,6 +15,7 @@ export interface Finding {
 	metric: string;
 	zone?: string;
 	country?: string;
+	recommendation?: string;
 }
 
 export interface InsightsReportResponse {
@@ -23,6 +24,7 @@ export interface InsightsReportResponse {
 	top_findings: Finding[];
 	recommendations: string[];
 	at_risk_metrics: string[];
+	trend_data: { metric: string; zone: string; points: { week: string; value: number }[] }[];
 	usage: {input_tokens: number; output_tokens: number; cache_read_input_tokens: number};
 }
 
@@ -57,13 +59,28 @@ ${correlations.map((c) => `- ${c.metric_a} ↔ ${c.metric_b}: r=${c.pearson_r.to
 
 {
   "top_findings": [
-    { "rank": 1, "type": "anomaly|trend|benchmark|correlation|opportunity", "severity": "high|medium|low", "description": "...", "metric": "...", "zone": "...", "country": "..." }
+    {
+      "rank": 1,
+      "type": "anomaly|trend|benchmark|correlation|opportunity",
+      "severity": "high|medium|low",
+      "description": "descripción detallada del hallazgo",
+      "metric": "nombre de la métrica",
+      "zone": "nombre de la zona",
+      "country": "código de país",
+      "recommendation": "acción concreta y accionable para este hallazgo específico"
+    }
   ],
-  "recommendations": ["acción 1", "acción 2", "acción 3"],
+  "recommendations": ["recomendación estratégica 1", "recomendación estratégica 2", "recomendación estratégica 3"],
   "at_risk_metrics": ["métrica 1", "métrica 2"]
 }
 
-Incluye los 5 hallazgos más importantes. Responde SOLO con el JSON, sin texto adicional.
+REGLAS OBLIGATORIAS:
+- Incluye EXACTAMENTE 5 hallazgos (top_findings).
+- Debe haber AL MENOS UN hallazgo de cada una de estas 5 categorías: anomaly, trend, benchmark, correlation, opportunity.
+- Cada hallazgo DEBE incluir el campo "recommendation" con una acción concreta y específica para ese hallazgo.
+- Las "recommendations" del nivel superior son recomendaciones estratégicas generales (distintas a las de cada finding).
+- Si no hay datos suficientes para una categoría, infiere una oportunidad de mejora basada en el contexto.
+- Responde SOLO con el JSON, sin texto adicional.
 
 ${context}`
 			}
@@ -83,12 +100,19 @@ ${context}`
 
 	const findings = ((parsed.top_findings ?? []) as Finding[]).map((f, i) => ({...f, rank: i + 1}));
 
+	const trendData = trends.slice(0, 5).map((t) => ({
+		metric: t.metric,
+		zone: t.zone,
+		points: t.values,
+	}));
+
 	return {
 		week: 'L0W',
 		generated_at: new Date().toISOString(),
 		top_findings: findings,
 		recommendations: (parsed.recommendations ?? []) as string[],
 		at_risk_metrics: (parsed.at_risk_metrics ?? []) as string[],
+		trend_data: trendData,
 		usage: {
 			input_tokens: response.usage.input_tokens,
 			output_tokens: response.usage.output_tokens,

@@ -18,7 +18,7 @@ export function getTrend(input: Input) {
   }
 
   const row = rows[0]!;
-  const weeksToShow = WEEK_COLS.slice(-(input.n_weeks));
+  const weeksToShow = WEEK_COLS.slice(-(input.n_weeks + 1));
 
   const trend = weeksToShow.map((week) => ({
     week,

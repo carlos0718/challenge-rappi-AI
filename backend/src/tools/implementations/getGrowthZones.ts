@@ -35,5 +35,5 @@ export function getGrowthZones(input: Input) {
     .sort((a, b) => b.growth_pct - a.growth_pct)
     .slice(0, input.top_n ?? 10);
 
-  return { n_weeks: input.n_weeks, country: input.country ?? "all", count: results.length, zones: results };
+  return { n_weeks: input.n_weeks, base_week: baseCol, latest_week: latestCol, country: input.country ?? "all", count: results.length, zones: results };
 }

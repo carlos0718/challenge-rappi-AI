@@ -17,7 +17,7 @@ Las métricas se reportan semanalmente con 9 semanas de historia (L8W_ROLL = má
 
 7. **Perfect Orders**: Porcentaje de pedidos completados sin incidencias (sin cancelaciones, sin demoras mayores a 30 minutos, sin reclamos). Principal métrica de calidad operacional.
 
-8. **Pro Adoption**: Porcentaje de usuarios activos que tienen suscripción Rappi Pro activa. Mide la penetración del programa de fidelidad.
+8. **Pro Adoption (Last Week Status)**: Porcentaje de usuarios activos que tienen suscripción Rappi Pro activa. Mide la penetración del programa de fidelidad. IMPORTANTE: el nombre exacto de esta métrica en los datos es "Pro Adoption (Last Week Status)" — usar siempre este nombre completo al llamar tools.
 
 9. **Restaurants Markdowns / GMV**: Ratio de descuentos en restaurantes sobre el Gross Merchandise Value. Mide el costo de los incentivos comerciales.
 

@@ -22,8 +22,8 @@ export function multivariateAnalysis(input: Input) {
   const highValues = highRows.map((r) => r[input.week]);
   const lowValues  = lowRows.map((r) => r[input.week]);
 
-  const pHigh = input.threshold_high ?? 75;
-  const pLow  = input.threshold_low  ?? 25;
+  const pHigh = input.threshold_high ?? 90;
+  const pLow  = input.threshold_low  ?? 10;
 
   const cutHigh = percentile(highValues, pHigh);
   const cutLow  = percentile(lowValues,  pLow);

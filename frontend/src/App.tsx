@@ -6,7 +6,13 @@ type Tab = "chat" | "reports";
 
 export default function App() {
   const [tab, setTab]           = useState<Tab>("chat");
-  const [sessionId]             = useState(() => crypto.randomUUID());
+  const [sessionId] = useState<string>(() => {
+    const stored = localStorage.getItem("rappi_session_id");
+    if (stored) return stored;
+    const id = crypto.randomUUID();
+    localStorage.setItem("rappi_session_id", id);
+    return id;
+  });
 
   useEffect(() => { document.title = "Rappi AI · Análisis de Operaciones"; }, []);
 

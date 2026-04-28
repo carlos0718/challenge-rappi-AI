@@ -4,8 +4,8 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
-// Anchor: backend/src/tools/ → up 3 levels → project root → data/
-const DATA_DIR = resolve(__dirname, "../../../data");
+// Anchor: backend/src/tools/ → up 2 levels → backend/ → data/
+const DATA_DIR = resolve(__dirname, "../../data");
 
 export interface MetricRow {
   COUNTRY: string;
