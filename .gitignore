@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.next/
+.env
+.claude/settings.local.json
+
+# Excel/Word temp files
+~$*
+
+# OS
+.DS_Store
+Thumbs.db

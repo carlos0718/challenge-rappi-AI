@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "insights-report",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $PWD/backend/src/hooks/weeklyReport.ts"
+          }
+        ]
+      }
+    ]
+  }
+}
