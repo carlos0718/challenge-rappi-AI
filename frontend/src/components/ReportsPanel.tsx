@@ -1,11 +1,16 @@
-import { useState }  from "react";
+import { useState, memo }  from "react";
 import FindingCard   from "./FindingCard";
+import MetricsTable  from "./MetricsTable";
+import TrendChart    from "./TrendChart";
 import type { InsightsReportResponse } from "../types/api";
 
-export default function ReportsPanel() {
-  const [report,  setReport]  = useState<InsightsReportResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error,   setError]   = useState<string | null>(null);
+type FindingsView = "cards" | "table";
+
+const ReportsPanel = memo(function ReportsPanel() {
+  const [report,       setReport]       = useState<InsightsReportResponse | null>(null);
+  const [loading,      setLoading]      = useState(false);
+  const [error,        setError]        = useState<string | null>(null);
+  const [findingsView, setFindingsView] = useState<FindingsView>("cards");
 
   async function runReport() {
     setLoading(true);
@@ -66,10 +71,39 @@ export default function ReportsPanel() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">Top Hallazgos</h3>
-            <div className="space-y-3">
-              {report.top_findings.map((f) => <FindingCard key={f.rank} finding={f} />)}
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-gray-700">Top Hallazgos</h3>
+              <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs font-medium">
+                <button
+                  onClick={() => setFindingsView("cards")}
+                  className={`px-3 py-1.5 transition ${
+                    findingsView === "cards"
+                      ? "bg-orange-500 text-white"
+                      : "bg-white text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  Tarjetas
+                </button>
+                <button
+                  onClick={() => setFindingsView("table")}
+                  className={`px-3 py-1.5 transition border-l border-gray-200 ${
+                    findingsView === "table"
+                      ? "bg-orange-500 text-white"
+                      : "bg-white text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  Tabla
+                </button>
+              </div>
             </div>
+
+            {findingsView === "cards" ? (
+              <div className="space-y-3">
+                {report.top_findings.map((f) => <FindingCard key={f.rank} finding={f} />)}
+              </div>
+            ) : (
+              <MetricsTable findings={report.top_findings} />
+            )}
           </div>
 
           {report.recommendations.length > 0 && (
@@ -96,8 +130,25 @@ export default function ReportsPanel() {
               </div>
             </div>
           )}
+
+          {report.trend_data && report.trend_data.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Tendencias</h3>
+              <div className="space-y-4">
+                {report.trend_data.map((series) => (
+                  <TrendChart
+                    key={series.metric}
+                    metric={series.metric}
+                    data={series.points}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
   );
-}
+});
+
+export default ReportsPanel;

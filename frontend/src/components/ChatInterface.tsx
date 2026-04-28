@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ChatMessage, InsightQueryResponse } from "../types/api";
@@ -11,7 +11,7 @@ const SUGGESTIONS = [
   "Evolución de Gross Profit UE en Chapinero las últimas 8 semanas",
 ];
 
-export default function ChatInterface({ sessionId }: Props) {
+const ChatInterface = memo(function ChatInterface({ sessionId }: Props) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput]       = useState("");
   const [loading, setLoading]   = useState(false);
@@ -128,4 +128,6 @@ export default function ChatInterface({ sessionId }: Props) {
       </div>
     </div>
   );
-}
+});
+
+export default ChatInterface;
