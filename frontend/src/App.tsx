@@ -39,12 +39,14 @@ export default function App() {
         </nav>
       </header>
 
-      {/* Content */}
+      {/* Content — both panels stay mounted to preserve state across tab switches */}
       <main className="flex-1 overflow-hidden">
-        {tab === "chat"
-          ? <ChatInterface sessionId={sessionId} />
-          : <div className="h-full overflow-y-auto"><ReportsPanel /></div>
-        }
+        <div className={tab === "chat" ? "h-full" : "hidden"}>
+          <ChatInterface sessionId={sessionId} />
+        </div>
+        <div className={tab === "reports" ? "h-full overflow-y-auto" : "hidden"}>
+          <ReportsPanel />
+        </div>
       </main>
     </div>
   );

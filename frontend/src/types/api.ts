@@ -16,12 +16,15 @@ export interface Finding {
   country?: string;
 }
 
+export interface TrendPoint { week: string; value: number; }
+
 export interface InsightsReportResponse {
   week: string;
   generated_at: string;
   top_findings: Finding[];
   recommendations: string[];
   at_risk_metrics: string[];
+  trend_data?: { metric: string; points: TrendPoint[] }[];
 }
 
 export interface ChatMessage {
